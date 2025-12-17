@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Timeline Quiz</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #5b78f7 0%, #618a44 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 550px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 2.5em;
+        }
+
+        .song-info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .song-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .mystery {
+            font-size: 1.2em;
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        .hint {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin: 15px 0 10px 0;
+            text-align: left;
+        }
+
+        input[type="number"], input[type="text"] {
+            font-size: 1.3em;
+            padding: 10px;
+            width: 90%;
+            max-width: 300px;
+            border: none;
+            border-radius: 10px;
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        .hint-btn {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 20px;
+            font-size: 0.9em;
+        }
+
+        .score {
+            font-size: 1.5em;
+            margin: 20px 0;
+        }
+
+        .feedback {
+            font-size: 1.2em;
+            margin: 20px 0;
+            min-height: 80px;
+            line-height: 1.6;
+        }
+
+        .progress {
+            font-size: 1.1em;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .final-score {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .correct {
+            color: #90EE90;
+        }
+
+        .wrong {
+            color: #FFB6C6;
+        }
+
+        .back-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .rank-display {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .current-rank {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .rank-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .rank-progress {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .progress-bar-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            height: 30px;
+            margin: 15px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #90EE90, #4CAF50);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .next-rank-info {
+            margin-top: 15px;
+            font-size: 1.1em;
+        }
+
+        .all-ranks {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .rank-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rank-item.achieved {
+            background: rgba(144, 238, 144, 0.3);
+        }
+
+        .rank-item.current {
+            background: rgba(255, 215, 0, 0.3);
+            border: 2px solid gold;
+        }
+
+        .rank-item.locked {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="scratch.html" class="back-link">← Back to Scratch Page</a>
+        <h1>🎵 Music Timeline Quiz</h1>
+        
+        <div id="gameScreen">
+            <div class="progress">Question <span id="currentQuestion">1</span> of 5</div>
+            <div class="score">Score: <span id="score">0</span></div>
+            
+            <div class="song-info">
+                <div class="song-title" id="songTitle"></div>
+                <div class="mystery">Who sang this? When did it come out?</div>
+                <div id="hintArea" class="hidden hint">
+                    💡 Hint: Released in the <span id="hintText"></span>
+                </div>
+            </div>
+            
+            <button class="hint-btn" id="hintBtn" onclick="showHint()">💡 Get Hint (-20 points)</button>
+            
+            <div class="question">Artist Name:</div>
+            <input type="text" id="artistGuess" placeholder="Type artist name">
+            
+            <div class="question">Release Year:</div>
+            <input type="number" id="yearGuess" min="1980" max="2024" placeholder="1990">
+            
+            <div>
+                <button onclick="submitGuess()">Submit Answer</button>
+            </div>
+            
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+        <div id="endScreen" class="hidden">
+            <div class="final-score">
+                Final Score: <span id="finalScore"></span> / 750
+            </div>
+            
+            <div class="rank-display">
+                <div class="current-rank" id="rankEmoji"></div>
+                <div class="rank-title" id="rankTitle"></div>
+                
+                <div class="rank-progress">
+                    <div id="progressInfo"></div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar"></div>
+                        <div class="progress-text" id="progressText"></div>
+                    </div>
+                    <div class="next-rank-info" id="nextRankInfo"></div>
+                </div>
+            </div>
+
+            <div class="all-ranks">
+                <h3 style="margin-top: 0;">All Ranks</h3>
+                <div id="allRanksList"></div>
+            </div>
+            
+            <button onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const songs = [
+            // 1980s
+            { title: "Sweet Child O' Mine", artist: "Guns N' Roses", year: 1987 },
+            { title: "Livin' on a Prayer", artist: "Bon Jovi", year: 1986 },
+            { title: "Don't Stop Believin'", artist: "Journey", year: 1981 },
+            { title: "Every Breath You Take", artist: "The Police", year: 1983 },
+            { title: "Take On Me", artist: "A-ha", year: 1985 },
+            { title: "Billie Jean", artist: "Michael Jackson", year: 1982 },
+            { title: "Like a Prayer", artist: "Madonna", year: 1989 },
+            { title: "With or Without You", artist: "U2", year: 1987 },
+            { title: "Girls Just Want to Have Fun", artist: "Cyndi Lauper", year: 1983 },
+            { title: "Sweet Dreams", artist: "Eurythmics", year: 1983 },
+            { title: "Eye of the Tiger", artist: "Survivor", year: 1982 },
+            { title: "Africa", artist: "Toto", year: 1982 },
+            { title: "Walking on Sunshine", artist: "Katrina and the Waves", year: 1983 },
+            { title: "Beat It", artist: "Michael Jackson", year: 1982 },
+            { title: "Total Eclipse of the Heart", artist: "Bonnie Tyler", year: 1983 },
+            { title: "Don't You Forget About Me", artist: "Simple Minds", year: 1985 },
+            { title: "Time After Time", artist: "Cyndi Lauper", year: 1984 },
+            { title: "When Doves Cry", artist: "Prince", year: 1984 },
+            
+            // 1990s
+            { title: "Smells Like Teen Spirit", artist: "Nirvana", year: 1991 },
+            { title: "Wonderwall", artist: "Oasis", year: 1995 },
+            { title: "I Want It That Way", artist: "Backstreet Boys", year: 1999 },
+            { title: "Baby One More Time", artist: "Britney Spears", year: 1998 },
+            { title: "Wannabe", artist: "Spice Girls", year: 1996 },
+            { title: "Black Hole Sun", artist: "Soundgarden", year: 1994 },
+            { title: "Under the Bridge", artist: "Red Hot Chili Peppers", year: 1991 },
+            { title: "Losing My Religion", artist: "REM", year: 1991 },
+            { title: "No Scrubs", artist: "TLC", year: 1999 },
+            { title: "Iris", artist: "Goo Goo Dolls", year: 1998 },
+            { title: "Zombie", artist: "The Cranberries", year: 1994 },
+            { title: "Kiss from a Rose", artist: "Seal", year: 1994 },
+            { title: "Waterfalls", artist: "TLC", year: 1994 },
+            { title: "No Rain", artist: "Blind Melon", year: 1992 },
+            
+            // 2000s
+            { title: "Bye Bye Bye", artist: "NSYNC", year: 2000 },
+            { title: "Mr. Brightside", artist: "The Killers", year: 2003 },
+            { title: "Hey Ya!", artist: "OutKast", year: 2003 },
+            { title: "Crazy in Love", artist: "Beyoncé", year: 2003 },
+            { title: "Halo", artist: "Beyoncé", year: 2008 },
+            { title: "Viva La Vida", artist: "Coldplay", year: 2008 },
+            { title: "Umbrella", artist: "Rihanna", year: 2007 },
+            { title: "Poker Face", artist: "Lady Gaga", year: 2008 },
+            { title: "Hot N Cold", artist: "Katy Perry", year: 2008 },
+            { title: "Rehab", artist: "Amy Winehouse", year: 2006 },
+            { title: "Apologize", artist: "OneRepublic", year: 2006 },
+            { title: "Chasing Cars", artist: "Snow Patrol", year: 2006 },
+            { title: "Beautiful Day", artist: "U2", year: 2000 },
+            { title: "Clocks", artist: "Coldplay", year: 2002 },
+            { title: "Seven Nation Army", artist: "The White Stripes", year: 2003 },
+            { title: "In the End", artist: "Linkin Park", year: 2000 },
+            { title: "Yeah!", artist: "Usher", year: 2004 },
+            
+            // 2010s
+            { title: "Rolling in the Deep", artist: "Adele", year: 2010 },
+            { title: "Someone Like You", artist: "Adele", year: 2011 },
+            { title: "Counting Stars", artist: "OneRepublic", year: 2013 },
+            { title: "Shake It Off", artist: "Taylor Swift", year: 2014 },
+            { title: "Uptown Funk", artist: "Mark Ronson", year: 2014 },
+            { title: "Shape of You", artist: "Ed Sheeran", year: 2017 },
+            { title: "Happy", artist: "Pharrell Williams", year: 2013 },
+            { title: "Radioactive", artist: "Imagine Dragons", year: 2012 },
+            { title: "Stay With Me", artist: "Sam Smith", year: 2014 },
+            { title: "All of Me", artist: "John Legend", year: 2013 },
+            { title: "Royals", artist: "Lorde", year: 2013 },
+            { title: "Call Me Maybe", artist: "Carly Rae Jepsen", year: 2011 },
+            { title: "We Are Young", artist: "Fun", year: 2011 },
+            { title: "Titanium", artist: "David Guetta", year: 2011 },
+            { title: "Somebody That I Used to Know", artist: "Gotye", year: 2011 },
+            { title: "Can't Stop the Feeling", artist: "Justin Timberlake", year: 2016 },
+            { title: "Shallow", artist: "Lady Gaga", year: 2018 },
+            { title: "Old Town Road", artist: "Lil Nas X", year: 2019 },
+            
+            // 2020s
+            { title: "Blinding Lights", artist: "The Weeknd", year: 2019 },
+            { title: "Levitating", artist: "Dua Lipa", year: 2020 },
+            { title: "Anti-Hero", artist: "Taylor Swift", year: 2022 },
+            { title: "Flowers", artist: "Miley Cyrus", year: 2023 },
+            { title: "As It Was", artist: "Harry Styles", year: 2022 },
+            { title: "Heat Waves", artist: "Glass Animals", year: 2020 },
+            { title: "Drivers License", artist: "Olivia Rodrigo", year: 2021 },
+            { title: "Good 4 U", artist: "Olivia Rodrigo", year: 2021 },
+            { title: "Save Your Tears", artist: "The Weeknd", year: 2020 },
+            { title: "Peaches", artist: "Justin Bieber", year: 2021 },
+            { title: "Positions", artist: "Ariana Grande", year: 2020 },
+            { title: "Butter", artist: "BTS", year: 2021 }
+        ];
+
+        const ranks = [
+            { name: "Music Newbie", emoji: "📻", minScore: 0 },
+            { name: "Casual Listener", emoji: "🎧", minScore: 100 },
+            { name: "Radio Regular", emoji: "📡", minScore: 200 },
+            { name: "Music Enthusiast", emoji: "🎵", minScore: 300 },
+            { name: "Playlist Pro", emoji: "🎶", minScore: 400 },
+            { name: "Music Buff", emoji: "🎤", minScore: 500 },
+            { name: "Music Connoisseur", emoji: "🎸", minScore: 600 },
+            { name: "Music Legend", emoji: "🏆", minScore: 700 }
+        ];
+
+        let currentSongIndex = 0;
+        let score = 0;
+        let gameSongs = [];
+        let hasAnswered = false;
+        let hintUsed = false;
+
+        function getRankForScore(score) {
+            for (let i = ranks.length - 1; i >= 0; i--) {
+                if (score >= ranks[i].minScore) {
+                    return { ...ranks[i], index: i };
+                }
+            }
+            return { ...ranks[0], index: 0 };
+        }
+
+        function displayRankProgress() {
+            const currentRank = getRankForScore(score);
+            const nextRank = ranks[currentRank.index + 1];
+            
+            document.getElementById('rankEmoji').textContent = currentRank.emoji;
+            document.getElementById('rankTitle').textContent = currentRank.name;
+            
+            if (nextRank) {
+                const pointsToNext = nextRank.minScore - score;
+                const currentRangeStart = currentRank.minScore;
+                const currentRangeEnd = nextRank.minScore;
+                const progressInRange = score - currentRangeStart;
+                const rangeSize = currentRangeEnd - currentRangeStart;
+                const percentage = (progressInRange / rangeSize) * 100;
+                
+                document.getElementById('progressInfo').textContent = `Progress to ${nextRank.name}`;
+                document.getElementById('progressBar').style.width = percentage + '%';
+                document.getElementById('progressText').textContent = `${score} / ${nextRank.minScore}`;
+                document.getElementById('nextRankInfo').innerHTML = `
+                    <strong>${pointsToNext} points</strong> away from <strong>${nextRank.emoji} ${nextRank.name}</strong>
+                `;
+            } else {
+                document.getElementById('progressInfo').textContent = 'Maximum Rank Achieved!';
+                document.getElementById('progressBar').style.width = '100%';
+                document.getElementById('progressText').textContent = 'MAX';
+                document.getElementById('nextRankInfo').innerHTML = `
+                    🎉 You've reached the highest rank! You're a true <strong>Music Legend!</strong>
+                `;
+            }
+            
+            // Display all ranks
+            const allRanksList = document.getElementById('allRanksList');
+            allRanksList.innerHTML = ranks.map((rank, index) => {
+                let className = 'rank-item ';
+                if (score >= rank.minScore) {
+                    if (currentRank.index === index) {
+                        className += 'current';
+                    } else {
+                        className += 'achieved';
+                    }
+                } else {
+                    className += 'locked';
+                }
+                
+                return `
+                    <div class="${className}">
+                        <span>${rank.emoji} ${rank.name}</span>
+                        <span>${rank.minScore}+ pts</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function startGame() {
+            gameSongs = [...songs].sort(() => Math.random() - 0.5).slice(0, 5);
+            currentSongIndex = 0;
+            score = 0;
+            hasAnswered = false;
+            
+            document.getElementById('score').textContent = score;
+            document.getElementById('gameScreen').classList.remove('hidden');
+            document.getElementById('endScreen').classList.add('hidden');
+            
+            loadSong();
+        }
+
+        function loadSong() {
+            const song = gameSongs[currentSongIndex];
+            document.getElementById('songTitle').textContent = song.title;
+            document.getElementById('currentQuestion').textContent = currentSongIndex + 1;
+            document.getElementById('artistGuess').value = '';
+            document.getElementById('yearGuess').value = '';
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('hintArea').classList.add('hidden');
+            document.getElementById('hintBtn').classList.remove('hidden');
+            hasAnswered = false;
+            hintUsed = false;
+        }
+
+        function showHint() {
+            if (hintUsed || hasAnswered) return;
+            
+            const song = gameSongs[currentSongIndex];
+            const decade = Math.floor(song.year / 10) * 10;
+            document.getElementById('hintText').textContent = decade + "s";
+            document.getElementById('hintArea').classList.remove('hidden');
+            document.getElementById('hintBtn').classList.add('hidden');
+            hintUsed = true;
+        }
+
+        function normalizeString(str) {
+            return str.toLowerCase()
+                .replace(/[^a-z0-9\s]/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function submitGuess() {
+            if (hasAnswered) return;
+            
+            const artistGuess = document.getElementById('artistGuess').value.trim();
+            const yearGuess = parseInt(document.getElementById('yearGuess').value);
+            const song = gameSongs[currentSongIndex];
+            
+            if (!artistGuess || !yearGuess) {
+                document.getElementById('feedback').innerHTML = '⚠️ Please fill in both the artist and year!';
+                return;
+            }
+            
+            if (yearGuess < 1980 || yearGuess > 2024) {
+                document.getElementById('feedback').innerHTML = '⚠️ Please enter a year between 1980 and 2024!';
+                return;
+            }
+            
+            hasAnswered = true;
+            
+            const normalizedGuess = normalizeString(artistGuess);
+            const normalizedArtist = normalizeString(song.artist);
+            const artistCorrect = normalizedGuess === normalizedArtist;
+            
+            const actualYear = song.year;
+            const difference = Math.abs(yearGuess - actualYear);
+            let yearPoints = 0;
+            let yearFeedback = '';
+            
+            if (difference === 0) {
+                yearPoints = 100;
+                yearFeedback = '🎉 Perfect year!';
+            } else if (difference === 1) {
+                yearPoints = 50;
+                yearFeedback = '🎯 So close on the year!';
+            } else if (difference === 2) {
+                yearPoints = 25;
+                yearFeedback = '👍 Pretty close on the year!';
+            } else if (difference <= 5) {
+                yearPoints = 10;
+                yearFeedback = '📅 Within 5 years!';
+            } else {
+                yearFeedback = '📅 Not quite...';
+            }
+            
+            let artistPoints = artistCorrect ? 50 : 0;
+            let totalPoints = yearPoints + artistPoints;
+            
+            if (hintUsed) {
+                totalPoints = Math.max(0, totalPoints - 20);
+            }
+            
+            score += totalPoints;
+            document.getElementById('score').textContent = score;
+            
+            let feedback = '<div>';
+            feedback += `<strong>Correct Answer:</strong><br>`;
+            feedback += `<span class="${artistCorrect ? 'correct' : 'wrong'}">${song.artist}</span> - ${actualYear}<br><br>`;
+            
+            if (artistCorrect) {
+                feedback += `✅ Artist correct! +50 points<br>`;
+            } else {
+                feedback += `❌ Artist was ${song.artist}<br>`;
+            }
+            
+            feedback += `${yearFeedback} +${yearPoints} points<br>`;
+            
+            if (hintUsed) {
+                feedback += `💡 Hint used: -20 points<br>`;
+            }
+            
+            feedback += `<br><strong>Round Score: ${totalPoints} points</strong><br>`;
+            feedback += '<button onclick="nextSong()">Next Song →</button>';
+            feedback += '</div>';
+            
+            document.getElementById('feedback').innerHTML = feedback;
+        }
+
+        function nextSong() {
+            currentSongIndex++;
+            
+            if (currentSongIndex >= gameSongs.length) {
+                endGame();
+            } else {
+                loadSong();
+            }
+        }
+
+        function endGame() {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('endScreen').classList.remove('hidden');
+            document.getElementById('finalScore').textContent = score;
+            
+            displayRankProgress();
+        }
+
+        function restartGame() {
+            startGame();
+        }
+
+        startGame();
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+.top {
+    background-image: url(../assets/img/concertbackground.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: Calibri, Arial, sans-serif;
+}
+html {
+    scroll-behavior: smooth;
+}
+
+.back-to-top {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-left: 20px;
+}
+
+.back-to-top:hover {
+    background-color: #155a9ee3;
+    color: white;
+    transform: scale(1.05);
+}
+
+.rock {
+    color: white;
+    background-color: #155a9ee3;
+    padding: 30px;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+.country {
+    color: white;
+    background-color: #6d798ee5;
+    padding: 30px;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+.pop {
+    color: white;
+    background-color: #155a9ee3;
+    padding: 30px;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.topbar {
+    background-color: #333;
+    padding: 5px;
+    text-align: center;
+}
+
+.topbar a {
+    color: white;
+    text-decoration: none;
+    margin: 0 20px;
+    font-size: 16px;
+}
+
+.topbar a:hover {
+    text-decoration: underline;
+}
+
+h1 {
+    margin-top: 40px !important;
+    margin-bottom: 40px !important;
+    margin-left: 20px !important;
+}
+
+.pics {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.vids {
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 20px;
+}
